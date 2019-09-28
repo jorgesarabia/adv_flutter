@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:platzi_trips_app/widgets/gradient_back.dart';
+import 'package:platzi_trips_app/widgets/text_input.dart';
 import 'package:platzi_trips_app/widgets/title_header.dart';
 
 class AddPlaceScreen extends StatefulWidget {
@@ -20,6 +21,10 @@ class AddPlaceScreen extends StatefulWidget {
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
   @override
   Widget build(BuildContext context) {
+
+    final _controllerTitlePlace = TextEditingController();
+    final _controllerDescriptionPlace = TextEditingController();
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -48,6 +53,29 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
               ),
               TitleHeader(title: "Add a new place"),
             ],
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 120.0,bottom: 20.0),
+            child: ListView(
+              children: <Widget>[
+                Container(),
+                Container(
+                  margin: EdgeInsets.only(bottom: 20.0),
+                  child: TextInput(
+                    hintText: "Title",
+                    inputType: null,
+                    maxLines: 1,
+                    controller: _controllerTitlePlace,
+                  ),
+                ),
+                TextInput(
+                  hintText: "Description",
+                  inputType: TextInputType.multiline,
+                  maxLines: 4,
+                  controller: _controllerDescriptionPlace,
+                )
+              ],
+            ),
           ),
         ],
       ),
