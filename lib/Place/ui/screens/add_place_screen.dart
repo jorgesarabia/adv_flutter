@@ -26,6 +26,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
     final _controllerTitlePlace = TextEditingController();
     final _controllerDescriptionPlace = TextEditingController();
+    final _controllerLocation = TextEditingController();
 
     return Scaffold(
       body: Stack(
@@ -63,14 +64,16 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 Container(
                   alignment: Alignment.center,
                   child: CardImageWithFabIcon(
+                    onPressedFabIcon: ()=>{},
                     width: 350.0,
                     height: 250.0,
                     pathImage: "assets/img/sunset.jpeg",//widget.image.path,
-                    iconData: Icons.camera,
+                    iconData: Icons.camera_alt,
+                    left: 0.0,
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 20.0),
+                  margin: EdgeInsets.only(top: 20.0,bottom: 20.0),
                   child: TextInput(
                     hintText: "Title",
                     inputType: null,
@@ -87,6 +90,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 Container(
                   margin: EdgeInsets.only(top: 20.0),
                   child: TitleInputLocation(
+                    controller: _controllerLocation,
                     hintText: "Add Location",
                     iconData: Icons.location_on,
                   ),
