@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:platzi_trips_app/User/bloc/bloc_user.dart';
+import 'package:platzi_trips_app/User/model/user.dart';
 import 'package:platzi_trips_app/platzi_trips_cupertino.dart';
 import 'package:platzi_trips_app/widgets/button_green.dart';
 import 'package:platzi_trips_app/widgets/gradient_back.dart';
@@ -57,7 +58,14 @@ class _SignInScreenState extends State<SignInScreen> {
               ButtonGreen(
                 onPressed: () {
                   userBloc.signOut();
-                  userBloc.signIn().then((FirebaseUser user)=>print("El ususario es ${user.displayName}"));
+                  userBloc.signIn().then((FirebaseUser user){
+                    userBloc.updateUserData(User(
+                      uid: user.uid,
+                      name: user.displayName,
+                      email: user.email,
+                      photoURL: user.photoUrl,
+                    ));
+                  });
                 },
                 title: "Login With Gmail",
                 height: 50.0,
