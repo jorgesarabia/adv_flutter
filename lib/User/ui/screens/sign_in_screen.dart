@@ -15,20 +15,24 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
 
   UserBloc userBloc;
+  double screenWidth;
 
   @override
   Widget build(BuildContext context) {
+    
+    screenWidth = MediaQuery.of(context).size.width;
+
     // Se declara desde el provider, ya que es un Singleton:
-    userBloc = BlocProvider.of(context); 
+    userBloc = BlocProvider.of(context);
     return _handleCurrentSession();
   }
 
-  Widget _handleCurrentSession(){
+  Widget _handleCurrentSession() {
     return StreamBuilder(
       stream: userBloc.authStatus,
-      builder: (BuildContext context, AsyncSnapshot snapshot){
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
         // snapshot => data => En este caso el User:
-        if(!snapshot.hasData || snapshot.hasError){
+        if (!snapshot.hasData || snapshot.hasError) {
           return signInGoogleUI();
         } else {
           return PlatziTripsCupertino();
@@ -42,23 +46,30 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          GradientBack(height: null,),
+          GradientBack(
+            height: null,
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "Welcome\nThis is your Travel App",
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontFamily: "Lato",
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              Flexible(
+                child: Container(
+                  width: screenWidth,
+                  child: Text(
+                    "Welcome\nThis is your Travel App",
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      fontFamily: "Lato",
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
               ButtonGreen(
                 onPressed: () {
                   userBloc.signOut();
-                  userBloc.signIn().then((FirebaseUser user){
+                  userBloc.signIn().then((FirebaseUser user) {
                     userBloc.updateUserData(User(
                       uid: user.uid,
                       name: user.displayName,
