@@ -71,7 +71,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     onPressedFabIcon: ()=>{},
                     width: 350.0,
                     height: 250.0,
-                    pathImage: "assets/img/sunset.jpeg",//widget.image.path,
+                    pathImage: widget.image.path,//"assets/img/sunset.jpeg",
                     iconData: Icons.camera_alt,
                     left: 0.0,
                   ),

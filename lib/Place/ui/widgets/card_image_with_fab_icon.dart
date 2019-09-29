@@ -22,7 +22,6 @@ class  CardImageWithFabIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
 
     final card = Container(
       height: height,
@@ -31,7 +30,7 @@ class  CardImageWithFabIcon extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-            image: AssetImage(pathImage)
+            image: AssetImage(pathImage),
         ),
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         shape: BoxShape.rectangle,
