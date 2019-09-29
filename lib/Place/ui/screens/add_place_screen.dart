@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:platzi_trips_app/Place/model/place.dart';
@@ -104,7 +105,12 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                   child: ButtonPurple(
                     buttonText: "Add Place",
                     onPressed: (){
+                      // 0. Obtener el usuario actual:
+                      userBloc.currentUser.then((FirebaseUser user){
+                        if(user != null){
                       // 1. Subir la imagen al firebase storage.
+                        }
+                      });
                       // 2. El firebase storage nos devuelve una url.
                       // 3. Eso lo guardamos junto con los otros datos en Cloud (Place).
                       userBloc.updatePlaceData(Place(

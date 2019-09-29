@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:platzi_trips_app/Place/model/place.dart';
+import 'package:platzi_trips_app/Place/repository/firebase_storage_repository.dart';
 import 'package:platzi_trips_app/User/model/user.dart';
 import 'package:platzi_trips_app/User/repository/auth_repository.dart';
 import 'package:platzi_trips_app/User/repository/cloud_firestore_repository.dart';
@@ -13,6 +17,7 @@ class UserBloc implements Bloc{
   // StreamController
    Stream<FirebaseUser> streamFirebase = FirebaseAuth.instance.onAuthStateChanged;
    Stream<FirebaseUser> get authStatus => streamFirebase;
+   Future<FirebaseUser> get currentUser => FirebaseAuth.instance.currentUser();
 
   // Casos de uso del objeto User:
   // 1. Sign In a la aplicación:
@@ -23,6 +28,10 @@ class UserBloc implements Bloc{
   final _cloudFirestoreRepository = CloudFirestoreRepository();
   void updateUserData(User user) => _cloudFirestoreRepository.updateUserDataFirestore(user);
   Future<void> updatePlaceData(Place place) => _cloudFirestoreRepository.updatePlaceData(place);
+
+  // 3. Cuando el usuario levanta un place:
+  final FirebaseStorageRepository _firebaseStorageRepository = FirebaseStorageRepository();
+  Future<StorageUploadTask> uploadFile(String path, File image) => _firebaseStorageRepository.uploadFile(path, image);
 
   @override
   void dispose() {
