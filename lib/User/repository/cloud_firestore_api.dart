@@ -37,8 +37,8 @@ class CloudFirestoreAPI {
         'urlImage': place.urlImage,
         'likes': place.likes,
         'userOwner': _db.document("$USERS/${user.uid}"), //reference
-      }).then((DocumentReference dr){
-        dr.get().then((DocumentSnapshot snapshot){
+      }).then((DocumentReference dr) {
+        dr.get().then((DocumentSnapshot snapshot) {
           var referencia = _db.document("$PLACES/${snapshot.documentID}");
           DocumentReference refUser = _db.collection(USERS).document(user.uid);
           refUser.updateData({
@@ -49,42 +49,53 @@ class CloudFirestoreAPI {
     });
   }
 
-  List<ProfilePlace> buildMyPlaces(List<DocumentSnapshot> placesListSnapshot){
+  List<ProfilePlace> buildMyPlaces(List<DocumentSnapshot> placesListSnapshot) {
     List<ProfilePlace> profilePlaces = List<ProfilePlace>();
 
-    placesListSnapshot.forEach((p){
-      profilePlaces.add(ProfilePlace(
-        Place(
-          name: p.data['name'],
-          description: p.data['description'],
-          urlImage: p.data['urlImage'],
-          likes: p.data['likes'],
-        )
-      ));
+    placesListSnapshot.forEach((p) {
+      profilePlaces.add(ProfilePlace(Place(
+        name: p.data['name'],
+        description: p.data['description'],
+        urlImage: p.data['urlImage'],
+        likes: p.data['likes'],
+      )));
     });
 
     return profilePlaces;
   }
 
-  List<CardImageWithFabIcon> buildPlaces(List<DocumentSnapshot> placesListSnapshot){
-    List<CardImageWithFabIcon> placesCard = List<CardImageWithFabIcon>();
-    double width = 300.0;
-    double heigth = 350.0;
-    double left = 20.0;
-    IconData iconData = Icons.favorite_border;
+  List<Place> buildPlaces(List placesListSnapshot, User user) {
+    List<Place> places = List<Place>();
 
-    placesListSnapshot.forEach((p){
-      placesCard.add(CardImageWithFabIcon(
-        pathImage: p.data['urlImage'],
-        width: width,
-        height: heigth,
-        left: left,
-        onPressedFabIcon: (){},
-        iconData: iconData,
-      ));
+    placesListSnapshot.forEach((p)  {
+      Place place = Place(id: p.documentID, name: p.data["name"], description: p.data["description"],
+          urlImage: p.data["urlImage"],likes: p.data["likes"]
+      );
+      List usersLikedRefs =  p.data["usersLiked"];
+      place.liked = false;
+      usersLikedRefs?.forEach((drUL){
+        if(user.uid == drUL.documentID){
+          place.liked = true;
+        }
+      });
+      places.add(place);
     });
-
-    return placesCard;
+    return places;
   }
- 
+
+  Future likePlace(Place place, String uid) async {
+    await _db
+        .collection(PLACES)
+        .document(place.id)
+        .get()
+        .then((DocumentSnapshot ds) {
+      int likes = ds.data["likes"];
+      _db.collection(PLACES).document(place.id).updateData({
+        'likes': place.liked ? likes + 1 : likes - 1,
+        'usersLiked': place.liked
+            ? FieldValue.arrayUnion([_db.document("${USERS}/${uid}")])
+            : FieldValue.arrayRemove([_db.document("${USERS}/${uid}")])
+      });
+    });
+  }
 }
