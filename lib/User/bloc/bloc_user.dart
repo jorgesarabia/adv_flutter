@@ -34,6 +34,9 @@ class UserBloc implements Bloc{
   Stream<QuerySnapshot> placesListStream = Firestore.instance.collection(CloudFirestoreAPI().PLACES).snapshots();
   Stream<QuerySnapshot> get placesStream => placesListStream;
   List<ProfilePlace> buildPlaces(List<DocumentSnapshot> placesListSnapshot) => _cloudFirestoreRepository.buildPlaces(placesListSnapshot);
+  Stream<QuerySnapshot> myPlacesListStream(String uid) => Firestore.instance.collection(CloudFirestoreAPI().PLACES)
+  .where("userOwner",isEqualTo: Firestore.instance.document("${CloudFirestoreAPI().USERS}/${uid}"))
+  .snapshots();
 
   // 3. Cuando el usuario levanta un place:
   final FirebaseStorageRepository _firebaseStorageRepository = FirebaseStorageRepository();
