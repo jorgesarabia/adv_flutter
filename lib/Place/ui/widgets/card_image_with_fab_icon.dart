@@ -22,6 +22,7 @@ class  CardImageWithFabIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Recibo la imagen $pathImage");
 
     final card = Container(
       height: height,
