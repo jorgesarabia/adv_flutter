@@ -32,6 +32,7 @@ class CloudFirestoreAPI {
       refPlace.add({
         'name': place.name,
         'description': place.description,
+        'urlImage': place.urlImage,
         'likes': place.likes,
         'userOwner': _db.document("$USERS/${user.uid}"), //reference
       }).then((DocumentReference dr){
@@ -55,6 +56,7 @@ class CloudFirestoreAPI {
           name: p.data['name'],
           description: p.data['description'],
           urlImage: p.data['urlImage'],
+          likes: p.data['likes'],
         )
       ));
     });
