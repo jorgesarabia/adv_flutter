@@ -10,6 +10,7 @@ import 'package:platzi_trips_app/User/model/user.dart';
 import 'package:platzi_trips_app/User/repository/auth_repository.dart';
 import 'package:platzi_trips_app/User/repository/cloud_firestore_api.dart';
 import 'package:platzi_trips_app/User/repository/cloud_firestore_repository.dart';
+import 'package:platzi_trips_app/User/ui/widgets/profile_place.dart';
 
 class UserBloc implements Bloc{
   final _auth_repository = AuthRepository();
@@ -32,6 +33,7 @@ class UserBloc implements Bloc{
   Future<void> updatePlaceData(Place place) => _cloudFirestoreRepository.updatePlaceData(place);
   Stream<QuerySnapshot> placesListStream = Firestore.instance.collection(CloudFirestoreAPI().PLACES).snapshots();
   Stream<QuerySnapshot> get placesStream => placesListStream;
+  List<ProfilePlace> buildPlaces(List<DocumentSnapshot> placesListSnapshot) => _cloudFirestoreRepository.buildPlaces(placesListSnapshot);
 
   // 3. Cuando el usuario levanta un place:
   final FirebaseStorageRepository _firebaseStorageRepository = FirebaseStorageRepository();

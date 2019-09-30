@@ -39,10 +39,7 @@ class ProfilePlacesList extends StatelessWidget {
               break;
             case ConnectionState.done:
               return Column(
-                children: <Widget>[
-                  ProfilePlace(place),
-                  ProfilePlace(place2),
-                ],
+                children: userBloc.buildPlaces(snapshot.data.documents),
               );
               break;
           }
